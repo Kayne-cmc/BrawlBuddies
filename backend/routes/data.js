@@ -1,20 +1,25 @@
 const express = require("express");
-const jwt = require("jsonwebtoken");
+const auth = require("../middleware/auth");
+const User = require("../models/user.model");
 
 const dataRouter = express.Router();
 
-dataRouter.get("/", (req,res) => {
-    const token = req.token;
+dataRouter.get("/", auth, async (req,res) => {
 
-    const payload = jwt.verify(token, process.env.JWT_SECRET, { httpOnly: true });
-
-    if(!payload) {
-        return res.status(401).send();
+    async function getMatches(user) {
+        await User.find({ region: user.region, rating: user.rating});
+        return matches;
     }
 
-    const steamId = payload.steamId;
+    try {
+        const userData = req.payload;
+        const matches = await getMatches(userData);
 
-    res.json(steamId);
+        res.json(matches);
+    } catch(err) {
+        console.error(err);
+        res.status(401).json({ error: "Unauthorized" });
+    } 
 });
 
 module.exports = dataRouter;

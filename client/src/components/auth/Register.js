@@ -44,6 +44,27 @@ export default function Register(props) {
                     value={newUser.email}
                     placeholder="Email"
                     onChange={onChangeNewUser} />
+                <label htmlFor="name">Name</label>
+                <input
+                    id="name"
+                    type="text"
+                    value={newUser.name}
+                    placeholder="Name"
+                    onChange={onChangeNewUser} />
+                <label htmlFor="steamId">Steam ID</label>
+                <input
+                    id="steamId"
+                    type="text"
+                    value={newUser.steamId}
+                    placeholder="Steam ID"
+                    onChange={onChangeNewUser} />
+                <label htmlFor="friendCode">Friend Code</label>
+                <input
+                    id="friendCode"
+                    type="text"
+                    value={newUser.friendCode}
+                    placeholder="Friend Code"
+                    onChange={onChangeNewUser} />
                 <label htmlFor="password">Password</label>
                 <input
                     id="password"

@@ -7,20 +7,20 @@ module.exports = async function validateRegister(data) {
         let errors = {};
         let correctPassword = false;
 
-        const { username, password } = data;
-        const existingUser = await User.findOne({username: username});
+        const { email, password } = data;
+        const existingUser = await User.findOne({ email: email});
 
         if(existingUser) {
             correctPassword = bcrypt.compare(password, existingUser.passwordHash);
         }
     
         switch(true) {
-            case (!username || !password):
+            case (!email || !password):
                 errors.empty = "Please fill all required fields";
                 errors.code = 400;
                 break;
             case (existingUser === null || !correctPassword):
-                errors.user = "Username or password is incorrect";
+                errors.user = "Email or password is incorrect";
                 errors.code = 401;
                 break;
             default:

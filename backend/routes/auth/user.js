@@ -11,7 +11,7 @@ const userRouter = express.Router();
 
 userRouter.post("/register", async (req,res) => {
     const newUserCredentials = req.body;
-    const { username, email, name, steamId, friendCode, password } = newUserCredentials;
+    const { email, name, steamId, friendCode, password } = newUserCredentials;
 
     try {
         const { errors, isValid } = await validateRegister(newUserCredentials);
@@ -37,7 +37,6 @@ userRouter.post("/register", async (req,res) => {
                     bcrypt.genSalt(10, (err, salt) => {
                         bcrypt.hash(password, salt, (err, hash) => {
                             const newUser = new User({
-                                username: username,
                                 email: email,
                                 name: name,
                                 steamId: steamId,
@@ -50,18 +49,21 @@ userRouter.post("/register", async (req,res) => {
                             newUser.save();
 
                             const token = jwt.sign({
-                                username: username,
                                 name: name,
                                 email: email,
-                                steamId: steamId
+                                steamId: steamId,
+                                freindCode: friendCode,
+                                region: region,
+                                rating: rating
                             }, process.env.JWT_SECRET);
 
                             return res.cookie("token", token, { httpOnly: true }).send();
                         });
                     });
-
-                });
-            });
+                })
+                .catch(err => console.error(err));
+            })
+            .catch(err => console.error(err));
         }
     } catch (err) {
         console.error(err);
@@ -71,7 +73,6 @@ userRouter.post("/register", async (req,res) => {
 
 userRouter.post("/login", async (req,res) => {
     const userCredentials = req.body;
-    const { username } = userCredentials;
 
     try {
         const { errors, isValid, existingUser } = await validateLogin(userCredentials);
@@ -80,9 +81,11 @@ userRouter.post("/login", async (req,res) => {
             return res.status(errors.code).send(errors);
         } else {
             const token = jwt.sign({
-                username: username,
                 name: existingUser.name,
-                steamId: existingUser.steamId
+                // steamId: existingUser.steamId,
+                friendCode: existingUser.friendCode,
+                region: existingUser.region,
+                rating: existingUser.rating,
             }, process.env.JWT_SECRET);
 
             return res.cookie("token", token, { httpOnly: true }).send();
@@ -98,13 +101,19 @@ userRouter.get("/logout", (req,res) => {
 })
 
 userRouter.get("/loggedIn", (req,res) => {
-    const token = req.cookies.token;
+    try {
+        const token = req.cookies.token;
 
-    if(!token) {
-        return res.json(false);
-    }
+        if(!token) {
+            return res.json(fals);
+        }
 
-    jwt.verify(token, process.env.JWT_SECRET)
+        jwt.verify(token, process.env.JWT_SECRET);
+
+        res.send(true);
+    } catch(err) {
+        res.json(false);
+    } 
 });
 
 module.exports = userRouter;

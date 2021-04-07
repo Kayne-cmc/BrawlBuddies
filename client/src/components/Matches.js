@@ -3,28 +3,28 @@ import axios from 'axios';
 
 export default function Matches() {
 
-    function Match(props) {
-        return(
-            <tr>
-                <td></td>
-            </tr>
-        );
-    }
+    // function Match(props) {
+    //     return(
+    //         <tr>
+    //             <td></td>
+    //         </tr>
+    //     );
+    // }
 
-    const [matches, setMatches] = useState([])
+    // const [matches, setMatches] = useState([])
 
-    useEffect(() => {
-        axios
-            .get("http://localhost:5000/data")
-            .then(res => {
-                setMatches(res);
-            })
-            .catch(err => console.log(err));
-    }, [])
+    // useEffect(() => {
+    //     axios
+    //         .get("http://localhost:5000/data")
+    //         .then(res => {
+    //             setMatches(res);
+    //         })
+    //         .catch(err => console.log(err));
+    // }, [])
 
-    function getMatches() {
+    // function getMatches() {
 
-    }
+    // }
 
     return (
         <div className="Matches">

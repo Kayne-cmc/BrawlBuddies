@@ -32,7 +32,7 @@ mongoose.connect(MONGO_URI, {
 });
 const connection = mongoose.connection;
 connection.once("open", () => {
-    console.log("Connection to server successful");
+    console.log("Connection to database successful");
 });
 
 //Listen to server
