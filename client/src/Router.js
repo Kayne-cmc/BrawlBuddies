@@ -5,6 +5,7 @@ import Nav from './components/layout/Nav';
 import Home from './components/layout/Home';
 import Register from './components/auth/Register';
 import Login from './components/auth/Login';
+import Dashboard from './components/Dashboard';
 import Matches from './components/Matches';
 
 export default function Router() {
@@ -16,10 +17,24 @@ export default function Router() {
         <BrowserRouter>
             <Nav />
             <Switch>
-                <Route exact path="/" component={Home} />
-                <Route exact path="/register" component={Register} />
-                <Route exact path="/login" component={Login} />
-                <Route exact path="/matches" component={Matches} />                
+                {
+                    loggedIn && (
+                        <>
+                            <Route exact path="/" component={Home} />
+                            <Route exact path="/dashboard" component={Dashboard} />
+                            <Route exact path="/matches" component={Matches} />   
+                        </>
+                    )
+                }
+                {
+                    !loggedIn && (
+                        <>
+                            <Route exact path="/register" component={Register} />
+                            <Route exact path="/login" component={Login} /> 
+                        </>
+                    )
+                }
+                          
             </Switch>
         </BrowserRouter>
     )

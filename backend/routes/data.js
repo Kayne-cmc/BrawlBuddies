@@ -16,6 +16,9 @@ dataRouter.get("/", auth, (req,res) => {
             region: userData.region,
             rating: { $gte: lowerLimit, $lte: upperLimit}
         }, (err, docs) => {
+            if (!docs) {
+                res.status.json("No matches currently");
+            }
             res.status(200).json(docs);
         });
 

@@ -11,7 +11,9 @@ module.exports = async function validateRegister(data) {
         const existingUser = await User.findOne({ email: email});
 
         if(existingUser) {
-            correctPassword = bcrypt.compare(password, existingUser.passwordHash);
+            await bcrypt.compare(password, existingUser.passwordHash)
+                .then(res => correctPassword = res)
+                .catch(err => console.log(err));
         }
     
         switch(true) {
