@@ -5,10 +5,12 @@ import Nav from './components/layout/Nav';
 import Home from './components/layout/Home';
 import Register from './components/auth/Register';
 import Login from './components/auth/Login';
+import Matches from './components/Matches';
 
 export default function Router() {
 
-    const loggedIn = useContext(AuthContext)
+    const { loggedIn } = useContext(AuthContext);
+    console.log(loggedIn);
 
     return (
         <BrowserRouter>
@@ -17,6 +19,7 @@ export default function Router() {
                 <Route exact path="/" component={Home} />
                 <Route exact path="/register" component={Register} />
                 <Route exact path="/login" component={Login} />
+                <Route exact path="/matches" component={Matches} />                
             </Switch>
         </BrowserRouter>
     )

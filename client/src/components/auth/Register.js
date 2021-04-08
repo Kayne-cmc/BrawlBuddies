@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
 
 export default function Register(props) {
 
@@ -15,72 +17,86 @@ export default function Register(props) {
     const Register = (e) => {
         e.preventDefault();
 
-        const { username, email, name, steamId, password, passwordCheck} = newUser;
+        const { email, name, steamId, friendCode, password, passwordCheck} = newUser;
 
         const user = {
-            username: username,
             email: email,
             name: name,
             steamId: steamId,
+            friendCode: friendCode,
             password: password,
             passwordCheck: passwordCheck,
-
         }
         
         axios.post("http://localhost:5000/auth/register", user)
-            .then(res => {
-
+            .then(() => {
+                props.history.push("/matches");
             })
+            .catch((err) => {
+                console.log(err);
+            });
     }
 
     return (
         <div className="Register">
             <h1>Create an account</h1>
-            <form onSubmit={Register}>
-                <label htmlFor="email">Email</label>
-                <input
-                    id="email"
-                    type="text"
-                    value={newUser.email}
-                    placeholder="Email"
-                    onChange={onChangeNewUser} />
-                <label htmlFor="name">Name</label>
-                <input
-                    id="name"
-                    type="text"
-                    value={newUser.name}
-                    placeholder="Name"
-                    onChange={onChangeNewUser} />
-                <label htmlFor="steamId">Steam ID</label>
-                <input
-                    id="steamId"
-                    type="text"
-                    value={newUser.steamId}
-                    placeholder="Steam ID"
-                    onChange={onChangeNewUser} />
-                <label htmlFor="friendCode">Friend Code</label>
-                <input
-                    id="friendCode"
-                    type="text"
-                    value={newUser.friendCode}
-                    placeholder="Friend Code"
-                    onChange={onChangeNewUser} />
-                <label htmlFor="password">Password</label>
-                <input
-                    id="password"
-                    type="text"
-                    value={newUser.password}
-                    placeholder="Password"
-                    onChange={onChangeNewUser} />
-                <label htmlFor="passwordCheck">Verify your password</label>
-                <input
-                    id="passwordCheck"
-                    type="text"
-                    value={newUser.passwordCheck}
-                    placeholder="Retype your password"
-                    onChange={onChangeNewUser} />
-                <button type="submit">Register</button>
-            </form>            
+            <Form onSubmit={Register}>
+                <Form.Group>
+                    <Form.Label htmlFor="name">Name</Form.Label>
+                    <Form.Control
+                        id="name"
+                        type="text"
+                        value={newUser.name}
+                        placeholder="What's your name?"
+                        onChange={onChangeNewUser} />
+                </Form.Group>                    
+                <Form.Group>
+                    <Form.Label htmlFor="steamId">Steam ID</Form.Label>
+                    <Form.Control
+                        id="steamId"
+                        type="text"
+                        value={newUser.steamId}
+                        placeholder="Steam ID"
+                        onChange={onChangeNewUser} />
+                </Form.Group>
+                <Form.Group>
+                    <Form.Label htmlFor="friendCode">Friend Code</Form.Label>
+                    <Form.Control
+                        id="friendCode"
+                        type="text"
+                        value={newUser.friendCode}
+                        placeholder="Friend Code"
+                        onChange={onChangeNewUser} />
+                </Form.Group>
+                <Form.Group>
+                    <Form.Label htmlFor="email">Email</Form.Label>
+                    <Form.Control
+                        id="email"
+                        type="email"
+                        value={newUser.email}
+                        placeholder="Enter Email"
+                        onChange={onChangeNewUser} />
+                </Form.Group>
+                <Form.Group>
+                    <Form.Label htmlFor="password">Password</Form.Label>
+                    <Form.Control
+                        id="password"
+                        type="password"
+                        value={newUser.password}
+                        placeholder="Choose a Password"
+                        onChange={onChangeNewUser} />
+                </Form.Group>
+                <Form.Group>
+                    <Form.Label htmlFor="passwordCheck">Verify your Password</Form.Label>
+                    <Form.Control
+                        id="passwordCheck"
+                        type="passwordCheck"
+                        value={newUser.passwordCheck}
+                        placeholder="Re-type your password"
+                        onChange={onChangeNewUser} />
+                </Form.Group>
+                <Button variant="primary" type="submit">Register</Button>
+            </Form>            
         </div>
     )
 }

@@ -12,6 +12,9 @@ export default function Logout() {
     }
 
     return (
-        <button onClick={logout}>Log out</button>
+        <div className="Logout">
+            <button onClick={logout}>Log out</button>
+        </div>
+        
     )
 }

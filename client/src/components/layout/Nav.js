@@ -3,9 +3,11 @@ import { Link } from 'react-router-dom';
 import Logout from '../auth/Logout';
 import AuthContext from '../../context/AuthContext';
 
+
 export default function Nav() {
 
-    const loggedIn = useContext(AuthContext);
+    const { loggedIn } = useContext(AuthContext);
+    console.log(loggedIn);
 
     return (
         <div className="Nav">

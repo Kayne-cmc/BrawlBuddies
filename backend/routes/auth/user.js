@@ -51,8 +51,7 @@ userRouter.post("/register", async (req,res) => {
                             const token = jwt.sign({
                                 name: name,
                                 email: email,
-                                steamId: steamId,
-                                freindCode: friendCode,
+                                friendCode: friendCode,
                                 region: region,
                                 rating: rating
                             }, process.env.JWT_SECRET);
@@ -82,7 +81,7 @@ userRouter.post("/login", async (req,res) => {
         } else {
             const token = jwt.sign({
                 name: existingUser.name,
-                // steamId: existingUser.steamId,
+                email: existingUser.email,
                 friendCode: existingUser.friendCode,
                 region: existingUser.region,
                 rating: existingUser.rating,
@@ -105,7 +104,7 @@ userRouter.get("/loggedIn", (req,res) => {
         const token = req.cookies.token;
 
         if(!token) {
-            return res.json(fals);
+            return res.json(false);
         }
 
         jwt.verify(token, process.env.JWT_SECRET);

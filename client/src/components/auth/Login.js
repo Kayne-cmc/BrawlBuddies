@@ -1,6 +1,8 @@
 import React, { useState, useContext } from 'react';
 import axios from 'axios';
 import AuthContext from '../../context/AuthContext';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
 
 export default function Login(props) {
 
@@ -23,7 +25,7 @@ export default function Login(props) {
 
         axios.post("http://localhost:5000/auth/login", userData)
             .then(() => {
-                props.history.push('/home');
+                props.history.push('/matches');
                 getLoggedIn();
             })
             .catch(err => console.error(err));
@@ -32,23 +34,29 @@ export default function Login(props) {
     return (
         <div className="Register">
             <h1>Log in</h1>
-            <form onSubmit={Login}>
-                <label htmlFor="email">Email</label>
-                <input
-                    id="email"
-                    type="text"
-                    value={user.email}
-                    placeholder="Email"
-                    onChange={onChangeUser} />
-                <label htmlFor="password">Password</label>
-                <input
-                    id="password"
-                    type="text"
-                    value={user.password}
-                    placeholder="Password"
-                    onChange={onChangeUser} />
-                <button type="submit">Log in</button>
-            </form>            
+            <Form onSubmit={Login}>
+                <Form.Group>
+                    <Form.Label htmlFor="email">Email</Form.Label>
+                    <Form.Control
+                        id="email"
+                        type="text"
+                        value={user.email}
+                        placeholder="Email"
+                        onChange={onChangeUser} />                    
+                </Form.Group>
+
+                <Form.Group>
+                    <Form.Label htmlFor="password">Password</Form.Label>
+                    <Form.Control
+                        id="password"
+                        type="password"
+                        value={user.password}
+                        placeholder="Password"
+                        onChange={onChangeUser} />                    
+                </Form.Group>
+
+                <Button type="submit">Log in</Button>
+            </Form>            
         </div>
     )
 }
