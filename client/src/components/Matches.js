@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import Table from 'react-bootstrap/Table';
 
 export default function Matches() {
 
@@ -28,7 +29,7 @@ export default function Matches() {
     return (
         <div className="Matches">
             <h1>Here are your matches in your region</h1>
-            <table>
+            <Table stripped bordered hover variant="dark" style={{"width": "80vw", "textAlign": "center", }}>
                 <thead>
                     <tr>
                         <th>Name</th>
@@ -41,7 +42,7 @@ export default function Matches() {
                         <Match match={match}></Match>
                     ))}
                 </tbody>
-            </table>
+            </Table>
         </div>
     )
 }
