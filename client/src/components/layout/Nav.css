@@ -1,0 +1,26 @@
+.Nav {
+    width: 100vw;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    background: red;
+}
+
+.Nav ul {
+}
+
+ul li {
+    display: inline-block;
+    position: relative;
+    list-style: none;
+    text-decoration: none;
+}
+
+ul li a {
+    text-decoration: none;
+}
+
+.line {
+    height: 10px;
+    color:black;
+}

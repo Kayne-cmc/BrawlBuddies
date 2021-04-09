@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import Logout from '../auth/Logout';
 import AuthContext from '../../context/AuthContext';
+import './Nav.css';
 
 
 export default function Nav() {
@@ -29,7 +30,8 @@ export default function Nav() {
                         </>
                     )
                 }
-            </ul>            
+            </ul>
+            <div className="line"></div>
         </div>
     )
 }
