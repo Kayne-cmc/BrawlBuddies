@@ -18,7 +18,7 @@ export default function Router() {
             <Nav />
             <Switch>
                 {
-                    loggedIn && (
+                    (loggedIn && loggedIn.data === true) && (
                         <>
                             <Route exact path="/" component={Home} />
                             <Route exact path="/dashboard" component={Dashboard} />
@@ -27,7 +27,7 @@ export default function Router() {
                     )
                 }
                 {
-                    !loggedIn && (
+                    (loggedIn && loggedIn.data === false) && (
                         <>
                             <Route exact path="/register" component={Register} />
                             <Route exact path="/login" component={Login} /> 

@@ -8,13 +8,12 @@ import './Nav.css';
 export default function Nav() {
 
     const { loggedIn } = useContext(AuthContext);
-    console.log(loggedIn);
 
     return (
         <div className="Nav">
             <ul>
                 { 
-                    loggedIn && (
+                    (loggedIn && loggedIn.data === true) && (
                         <>
                             <li><Link to="/">Home</Link></li>
                             <li><Link to="/dashboard">Dashboard</Link></li>
@@ -23,7 +22,7 @@ export default function Nav() {
                     )
                 }
                 {
-                    !loggedIn && (
+                    (loggedIn && loggedIn.data === false) && (
                         <>
                             <li><Link to="/register">Register</Link></li>
                             <li><Link to="/login">Login</Link></li>

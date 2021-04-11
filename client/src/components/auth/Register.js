@@ -1,11 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import { useHistory } from 'react-router-dom'
 import axios from 'axios';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import AuthContext from '../../context/AuthContext';
 
 export default function Register(props) {
 
     const [newUser, setNewUser] = useState({});
+    const { getLoggedIn } = useContext(AuthContext);
+    const history = useHistory();
 
     const onChangeNewUser = (e) => {
         setNewUser({
@@ -30,7 +34,8 @@ export default function Register(props) {
         
         axios.post("http://localhost:5000/auth/register", user)
             .then(() => {
-                props.history.push("/matches");
+                getLoggedIn();
+                history.push("/matches");
             })
             .catch((err) => {
                 console.log(err);

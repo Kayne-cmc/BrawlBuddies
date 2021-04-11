@@ -96,12 +96,13 @@ userRouter.post("/login", async (req,res) => {
 });
 
 userRouter.get("/logout", (req,res) => {
-    try {
-        res.cookies("token", "hello", {httpOnly: true, expires: new Date(0)});
-    } catch(err) {
-        res.status(500).send();
-    }
-})
+    res
+        .cookie("token", "", {
+            httpOnly: true,
+            expires: new Date(0)
+        })
+        .send();
+});
 
 userRouter.get("/loggedIn", (req,res) => {
     try {
