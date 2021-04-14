@@ -2,7 +2,7 @@ const isEmpty = require("is-empty");
 const User = require("../models/user.model");
 const bcrypt = require("bcryptjs");
 
-module.exports = async function validateRegister(data) {
+module.exports = async function validateLogin(data) {
     try {
         let errors = {};
         let correctPassword = false;

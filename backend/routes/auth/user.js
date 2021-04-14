@@ -2,10 +2,14 @@ const express = require("express");
 const User = require("../../models/user.model");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const axios = require("axios")
+const axios = require("axios");
+const dotenv = require("dotenv");
+
+dotenv.config();
 
 const validateRegister = require("../../validation/registerValidation");
 const validateLogin = require("../../validation/loginValidation");
+const { BRAWLHALLA_API } = process.env;
 
 const userRouter = express.Router();
 
@@ -19,16 +23,15 @@ userRouter.post("/register", async (req,res) => {
         if (!isValid) {
             return res.status(errors.code).send(errors);
         } else {
-
             //Get BrawlhallaId from SteamId
             axios
-            .get('https://api.brawlhalla.com/search?steamid=' + steamId + '&api_key=7RB2I47437H3TT3JYJEN')
+            .get('https://api.brawlhalla.com/search?steamid=' + steamId + '&api_key=' + BRAWLHALLA_API)
             .then(result => {
-                brawlhallaId = result.data.brawlhalla_id
+                const brawlhallaId = result.data.brawlhalla_id
 
                 //Get region and rating from BrawlhallaId
                 axios
-                .get('https://api.brawlhalla.com/player/' + brawlhallaId + '/ranked?api_key=7RB2I47437H3TT3JYJEN')
+                .get('https://api.brawlhalla.com/player/' + brawlhallaId + '/ranked?api_key=' + BRAWLHALLA_API)
                 .then(result => {
 
                     const { region, rating } = result.data;
@@ -41,6 +44,7 @@ userRouter.post("/register", async (req,res) => {
                                 name: name,
                                 steamId: steamId,
                                 friendCode: friendCode,
+                                brawlhallaId: brawlhallaId,
                                 region: region,
                                 rating: rating,
                                 passwordHash: hash
@@ -52,6 +56,7 @@ userRouter.post("/register", async (req,res) => {
                                 name: name,
                                 email: email,
                                 friendCode: friendCode,
+                                brawlhallaId: brawlhallaId,
                                 region: region,
                                 rating: rating
                             }, process.env.JWT_SECRET);
@@ -79,10 +84,15 @@ userRouter.post("/login", async (req,res) => {
         if (!isValid) {
             return res.status(errors.code).send(errors);
         } else {
+
+            axios
+                .get("https://api.brawlhalla.com/player/" + existingUser.brawlhallaId + "/ranked?api_key=" + BRAWLHALLA_API)
+
             const token = jwt.sign({
                 name: existingUser.name,
                 email: existingUser.email,
                 friendCode: existingUser.friendCode,
+                brawlhallaId: existingUser.brawlhallaId,
                 region: existingUser.region,
                 rating: existingUser.rating,
             }, process.env.JWT_SECRET);

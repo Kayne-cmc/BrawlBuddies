@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './Matches.css';
 import Table from 'react-bootstrap/Table';
 
 export default function Matches() {
@@ -18,7 +20,7 @@ export default function Matches() {
 
     useEffect(() => {
         axios
-            .get("http://localhost:5000/data")
+            .get("http://localhost:5000/data/matches")
             .then(res => {
                 setMatches(res.data);
                 console.log (res.data);
@@ -29,7 +31,7 @@ export default function Matches() {
     return (
         <div className="Matches">
             <h1>Here are your matches in your region</h1>
-            <Table stripped bordered hover variant="dark" style={{"width": "80vw", "textAlign": "center", }}>
+            <Table stripped bordered hover variant="dark" className="table">
                 <thead>
                     <tr>
                         <th>Name</th>
@@ -39,7 +41,7 @@ export default function Matches() {
                 </thead>
                 <tbody>
                     {matches && matches.map((match, index) => (
-                        <Match match={match}></Match>
+                        <Match match={match} key={index}></Match>
                     ))}
                 </tbody>
             </Table>

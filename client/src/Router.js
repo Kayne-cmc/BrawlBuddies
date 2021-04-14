@@ -5,24 +5,23 @@ import Nav from './components/layout/Nav';
 import Home from './components/layout/Home';
 import Register from './components/auth/Register';
 import Login from './components/auth/Login';
-import Dashboard from './components/Dashboard';
 import Matches from './components/Matches';
+import Stats from './components/Stats';
 
 export default function Router() {
 
     const { loggedIn } = useContext(AuthContext);
-    console.log(loggedIn);
 
     return (
         <BrowserRouter>
             <Nav />
             <Switch>
+                <Route exact path="/" component={Home} />
                 {
                     (loggedIn && loggedIn.data === true) && (
                         <>
-                            <Route exact path="/" component={Home} />
-                            <Route exact path="/dashboard" component={Dashboard} />
                             <Route exact path="/matches" component={Matches} />   
+                            <Route exact path="/stats" component={Stats} />
                         </>
                     )
                 }

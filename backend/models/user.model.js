@@ -18,6 +18,10 @@ const userModel = new Schema({
         type: Number,
         required: true
     },
+    brawlhallaId: {
+        type: Number,
+        required: true
+    },
     region: {
         type: String,
         required: true,

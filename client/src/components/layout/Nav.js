@@ -11,12 +11,14 @@ export default function Nav() {
 
     return (
         <div className="Nav">
+            <Link to="/"><h2 className="title">BrawlBuddies</h2></Link>
             <ul>
                 { 
                     (loggedIn && loggedIn.data === true) && (
                         <>
                             <li><Link to="/">Home</Link></li>
-                            <li><Link to="/dashboard">Dashboard</Link></li>
+                            <li><Link to="/matches">Matches</Link></li>
+                            <li><Link to="/stats">Stats</Link></li>
                             <li><Logout /></li>         
                         </>               
                     )

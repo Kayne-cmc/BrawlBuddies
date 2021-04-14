@@ -1,9 +1,9 @@
 import React, { useContext } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 import axios from 'axios';
 import AuthContext from '../../context/AuthContext';
 
-export default function Logout(props) {
+export default function Logout() {
 
     const { getLoggedIn } = useContext(AuthContext);
     const history = useHistory()
@@ -16,7 +16,7 @@ export default function Logout(props) {
 
     return (
         <div className="Logout">
-            <button onClick={logout}>Log out</button>
+            <Link onClick={logout}>Log out</Link>
         </div>
     )
 }
