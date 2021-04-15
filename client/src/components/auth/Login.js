@@ -4,6 +4,7 @@ import axios from 'axios';
 import AuthContext from '../../context/AuthContext';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import './Auth.css';
 
 export default function Login() {
 
@@ -34,7 +35,7 @@ export default function Login() {
     }
 
     return (
-        <div className="Register">
+        <div className="Login">
             <h1>Log in</h1>
             <Form onSubmit={Login}>
                 <Form.Group>

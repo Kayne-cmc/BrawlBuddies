@@ -1,0 +1,25 @@
+.Login, .Register {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    background: rgb(177, 143, 111);
+}
+
+h1 {
+    width: 100%;
+    text-align: center
+}
+
+i {
+    font-size: 20px;
+    color: black;
+    margin: 10px;
+}
+
+i:hover {
+    color: rgb(100, 100, 100);
+}
+
+Form {
+    width: 50vw;
+}

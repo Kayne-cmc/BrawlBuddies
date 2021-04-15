@@ -1,9 +1,10 @@
 import React, { useState, useContext } from 'react';
-import { useHistory } from 'react-router-dom'
+import { useHistory, Link } from 'react-router-dom'
 import axios from 'axios';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import AuthContext from '../../context/AuthContext';
+import './Auth.css';
 
 export default function Register(props) {
 
@@ -57,6 +58,7 @@ export default function Register(props) {
                 </Form.Group>                    
                 <Form.Group>
                     <Form.Label htmlFor="steamId">Steam ID</Form.Label>
+                    <Link to="help"><i className="fas fa-question-circle" /></Link>
                     <Form.Control
                         id="steamId"
                         type="text"
@@ -66,6 +68,7 @@ export default function Register(props) {
                 </Form.Group>
                 <Form.Group>
                     <Form.Label htmlFor="friendCode">Friend Code</Form.Label>
+                    <Link to="/help"><i className="fas fa-question-circle" /></Link>
                     <Form.Control
                         id="friendCode"
                         type="text"
@@ -95,7 +98,7 @@ export default function Register(props) {
                     <Form.Label htmlFor="passwordCheck">Verify your Password</Form.Label>
                     <Form.Control
                         id="passwordCheck"
-                        type="passwordCheck"
+                        type="password"
                         value={newUser.passwordCheck}
                         placeholder="Re-type your password"
                         onChange={onChangeNewUser} />

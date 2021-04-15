@@ -8,8 +8,12 @@
 }
 
 .title {
+    font-size: 40px;
     font-family: 'Francois One', sans-serif;
-    color: rgb(216, 149, 24);
+    background: -webkit-linear-gradient(yellow, red);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
     margin: 0 auto;
 }
 

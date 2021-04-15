@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import AuthContext from './context/AuthContext';
 import Nav from './components/layout/Nav';
 import Home from './components/layout/Home';
+import Help from './components/layout/Help';
 import Register from './components/auth/Register';
 import Login from './components/auth/Login';
 import Matches from './components/Matches';
@@ -17,6 +18,7 @@ export default function Router() {
             <Nav />
             <Switch>
                 <Route exact path="/" component={Home} />
+                <Route exact path="/help" component={Help} />
                 {
                     (loggedIn && loggedIn.data === true) && (
                         <>

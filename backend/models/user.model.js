@@ -11,15 +11,15 @@ const userModel = new Schema({
         required: true
     },
     steamId: {
-        type: Number,
+        type: String,
         required: true
     },
     friendCode: {
-        type: Number,
+        type: String,
         required: true
     },
     brawlhallaId: {
-        type: Number,
+        type: String,
         required: true
     },
     region: {

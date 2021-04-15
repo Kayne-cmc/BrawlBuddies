@@ -23,7 +23,6 @@ export default function Matches() {
             .get("http://localhost:5000/data/matches")
             .then(res => {
                 setMatches(res.data);
-                console.log (res.data);
             })
             .catch(err => console.log(err));
     }, [])

@@ -87,6 +87,7 @@ userRouter.post("/login", async (req,res) => {
 
             axios
                 .get("https://api.brawlhalla.com/player/" + existingUser.brawlhallaId + "/ranked?api_key=" + BRAWLHALLA_API)
+                .then(res)
 
             const token = jwt.sign({
                 name: existingUser.name,
