@@ -2,15 +2,25 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    background: rgb(177, 143, 111);
+    background: white;
+}
+
+.input {
+    width: 100%;
 }
 
 h1 {
     width: 100%;
-    text-align: center
+    text-align: center;
 }
 
-i {
+form {
+    width: 25vw;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.fa-question-circle {
     font-size: 20px;
     color: black;
     margin: 10px;

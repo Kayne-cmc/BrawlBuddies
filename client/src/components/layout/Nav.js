@@ -14,7 +14,7 @@ export default function Nav() {
             <Link to="/"><h2 className="title">BrawlBuddies</h2></Link>
             <ul>
                 { 
-                    (loggedIn && loggedIn.data === true) && (
+                    (loggedIn && loggedIn.data) && (
                         <>
                             <li><Link to="/">Home</Link></li>
                             <li><Link to="/matches">Matches</Link></li>
@@ -24,7 +24,7 @@ export default function Nav() {
                     )
                 }
                 {
-                    (loggedIn && loggedIn.data === false) && (
+                    (loggedIn && !loggedIn.data) && (
                         <>
                             <li><Link to="/register">Register</Link></li>
                             <li><Link to="/login">Login</Link></li>

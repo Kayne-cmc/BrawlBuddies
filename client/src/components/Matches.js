@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import './Matches.css';
 import Table from 'react-bootstrap/Table';
 
@@ -30,7 +29,7 @@ export default function Matches() {
     return (
         <div className="Matches">
             <h1>Here are your matches in your region</h1>
-            <Table stripped bordered hover variant="dark" className="table">
+            <Table striped bordered hover variant="dark" className="table">
                 <thead>
                     <tr>
                         <th>Name</th>

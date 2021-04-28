@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { useHistory, Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import AuthContext from '../../context/AuthContext';
 
@@ -16,7 +16,7 @@ export default function Logout() {
 
     return (
         <div className="Logout">
-            <Link onClick={logout}>Log out</Link>
+            <button onClick={logout}>Log out</button>
         </div>
     )
 }

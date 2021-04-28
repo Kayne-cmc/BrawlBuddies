@@ -1,31 +1,33 @@
 html {
-    background: rgb(177, 143, 111);
+    background: black;
 }
 
 .Home {
     display: flex;
     flex-wrap: wrap;
-    background: rgb(177, 143, 111);
+    background: black;
 }
 
 .box {
-    background: rgb(240,240,240);
-    padding: 0.7em;
-    margin: 0 auto;
-    border-radius: 15%;
+    width: 100%;
+    text-align: center;
+}
+
+a {
+    text-decoration: none;
+    color: black;
 }
 
 i {
-    font-size: 50px;
-    margin: 0 auto;
+    font-size: 200px;
 }
 
-.box:hover {
+.card:hover {
     background: rgb(35, 101, 201);
     transition: 1s;
 }
 
-.box:hover > i {
+.card:hover > .fas {
     color: white;
     transition: 1s;
 }
@@ -34,6 +36,8 @@ i {
     min-width: 300px;
     min-height: 300px;
     margin: 1em;
+    background:rgb(240,240,240);
+    border-radius: 15%;
 }
 
 .card h3 {

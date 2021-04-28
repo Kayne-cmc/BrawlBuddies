@@ -4,7 +4,7 @@
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    background: navy;
+    background: linear-gradient(rgb(0,0,150), rgb(0,0,255), rgb(240,240,255));
 }
 
 .title {
@@ -15,6 +15,7 @@
     background-clip: text;
     -webkit-text-fill-color: transparent;
     margin: 0 auto;
+    text-decoration: none;
 }
 
 .Nav ul {
@@ -31,6 +32,12 @@ ul li a {
     padding: 0 0.5em;
     text-decoration: none;
     font-family: 'Gloria Hallelujah', cursive;
+    color: black;
+}
+
+ul li a:hover {
+    color: rgb(240,240,240);
+    text-decoration: none;
 }
 
 .line {

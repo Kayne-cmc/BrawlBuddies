@@ -31,13 +31,12 @@ dataRouter.get("/matches", auth, (req,res) => {
 
 dataRouter.get("/stats", auth, async (req, res) => {
     try {
-        const userData = req.payload;
-        const playerData = await axios.get("https://api.brawlhalla.com/player/" + userData.brawlhallaId + "/ranked?api_key=" + BRAWLHALLA_API);
+        const player = await axios.get("https://api.brawlhalla.com/player/" + req.payload.brawlhallaId + "/ranked?api_key=" + BRAWLHALLA_API);
 
-        res.status(200).json(playerData);
+        res.status(200).json(player.data);
     } catch (err) {
         console.error(err);
-        res.status(401).json({ error: "Unauthorized" })
+        res.status(401).json({ error: "Unauthorized" });
     }
 });
 
