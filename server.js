@@ -3,8 +3,10 @@ const cors = require("cors");
 const dotenv = require("dotenv")
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
+const path = require("path");
 const userRouter = require("./routes/auth/user");
 const dataRouter = require("./routes/data");
+const actionsRouter = require("./routes/actions");
 
 dotenv.config();
 
@@ -14,21 +16,25 @@ const { MONGO_URI } = process.env;
 const app = express();
 
 //Middleware
+app.use(express.static(path.join(__dirname, "client/build")));
 app.use(cookieParser());
 app.use(express.json());
 app.use(cors({
     origin: ["http://localhost:3000"],
-    credentials: true
+    // origin: ["http://localhost:3000"],
+    credentials: true,
 }));
 
 //Routers
 app.use("/auth", userRouter);
 app.use("/data", dataRouter);
+app.use("/actions", actionsRouter);
 
 //Connect to database
 mongoose.connect(MONGO_URI, {
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
+    useFindAndModify: false
 });
 const connection = mongoose.connection;
 connection.once("open", () => {
@@ -36,6 +42,9 @@ connection.once("open", () => {
 });
 
 //Listen to server
+app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname + "/client/build/index.html"));
+});
 app.listen(PORT, () => {
     console.log(`Server listening on port ${PORT}`);
 });

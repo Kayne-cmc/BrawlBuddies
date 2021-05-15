@@ -1,8 +1,38 @@
 .Matches {
-    background: black;
+    min-height: calc(100vh - 50px);
 }
 
-.table {
-    width: 80vw;
-    margin: 0 auto;
+.players {
+    display: flex;
+    justify-content: center;
+}
+
+.player {
+    min-width: 300px;
+    width: fit-content;
+    min-height: 150px;
+    height: 200px;
+    margin: 0 1em;
+    text-align: center;
+}
+
+.MuiCard-root {
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 1em;
+}
+
+.wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.iconButton{
+    width: 3em;
+    height: 3em;
+    margin: 0 auto !important;
+    min-width: 20px !important;
+    border-radius: 50% !important;
 }

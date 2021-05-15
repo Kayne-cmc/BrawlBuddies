@@ -5,11 +5,11 @@ const User = require("../models/user.model");
 module.exports = async function validateRegister(data) {
     try {
         let errors = {};
-        const { email, name, steamId, friendCode, password, passwordCheck } = data;
+        const { email, steamId, friendCode, mainLegend, password, passwordCheck } = data;
         const existingEmail = await User.findOne({email: email});
     
         switch(true) {
-            case (!name || !steamId || !friendCode || !email || !password || !passwordCheck):
+            case (!steamId || !friendCode || !email || !mainLegend || !password || !passwordCheck):
                 errors.empty = "Please fill all required fields";
                 errors.code = 400;
                 break;

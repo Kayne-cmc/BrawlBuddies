@@ -1,110 +1,143 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect} from 'react';
 import { useHistory, Link } from 'react-router-dom'
-import axios from 'axios';
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
 import AuthContext from '../../context/AuthContext';
 import './Auth.css';
+import DataService from '../../services/service';
 
-export default function Register(props) {
+import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import { TextField, Button, Paper, Select, MenuItem, FormControl, InputLabel } from '@material-ui/core';
+
+export default function Register() {
 
     const [newUser, setNewUser] = useState({});
+    const [legends, setLegends] = useState([]);
     const { getLoggedIn } = useContext(AuthContext);
     const history = useHistory();
+
+    useEffect(() => {
+        DataService.legends()
+            .then(res => {
+                setLegends(res.data);
+            })
+            .catch(err => console.log(err));
+    }, []);
 
     const onChangeNewUser = (e) => {
         setNewUser({
             ...newUser,
-            [e.target.id]: e.target.value
+            [e.target.name]: e.target.value
         });
     }
 
     const Register = (e) => {
         e.preventDefault();
 
-        const { email, name, steamId, friendCode, password, passwordCheck} = newUser;
+        const { email, steamId, friendCode, legendIndex, password, passwordCheck } = newUser;
 
         const user = {
             email: email,
-            name: name,
             steamId: steamId,
             friendCode: friendCode,
+            mainLegend: legends[legendIndex].img,
             password: password,
             passwordCheck: passwordCheck,
         }
         
-        axios.post("http://localhost:5000/auth/register", user)
+        DataService.register(user)
             .then(() => {
                 getLoggedIn();
-                history.push("/matches");
+                history.push("/");
             })
             .catch((err) => {
                 console.log(err);
             });
     }
 
+    const theme = createMuiTheme({
+        palette: {
+            background: {
+                paper: "rgb(20,20,20)"
+            },
+            type: "dark",
+        }
+    });
+
     return (
         <div className="Register">
-            <h1>Create an account</h1>
-            <Form onSubmit={Register}>
-                <Form.Group>
-                    <Form.Label htmlFor="name">Name</Form.Label>
-                    <Form.Control
-                        id="name"
-                        type="text"
-                        value={newUser.name}
-                        placeholder="What's your name?"
-                        onChange={onChangeNewUser} />
-                </Form.Group>                    
-                <Form.Group>
-                    <Form.Label htmlFor="steamId">Steam ID</Form.Label>
-                    <Link to="help"><i className="fas fa-question-circle" /></Link>
-                    <Form.Control
-                        id="steamId"
-                        type="text"
-                        value={newUser.steamId}
-                        placeholder="Steam ID"
-                        onChange={onChangeNewUser} />
-                </Form.Group>
-                <Form.Group>
-                    <Form.Label htmlFor="friendCode">Friend Code</Form.Label>
-                    <Link to="/help"><i className="fas fa-question-circle" /></Link>
-                    <Form.Control
-                        id="friendCode"
-                        type="text"
-                        value={newUser.friendCode}
-                        placeholder="Friend Code"
-                        onChange={onChangeNewUser} />
-                </Form.Group>
-                <Form.Group>
-                    <Form.Label htmlFor="email">Email</Form.Label>
-                    <Form.Control
-                        id="email"
-                        type="email"
-                        value={newUser.email}
-                        placeholder="Enter Email"
-                        onChange={onChangeNewUser} />
-                </Form.Group>
-                <Form.Group>
-                    <Form.Label htmlFor="password">Password</Form.Label>
-                    <Form.Control
-                        id="password"
-                        type="password"
-                        value={newUser.password}
-                        placeholder="Choose a Password"
-                        onChange={onChangeNewUser} />
-                </Form.Group>
-                <Form.Group>
-                    <Form.Label htmlFor="passwordCheck">Verify your Password</Form.Label>
-                    <Form.Control
-                        id="passwordCheck"
-                        type="password"
-                        value={newUser.passwordCheck}
-                        placeholder="Re-type your password"
-                        onChange={onChangeNewUser} />
-                </Form.Group>
-                <Button variant="primary" type="submit">Register</Button>
-            </Form>            
+            <ThemeProvider theme={theme}>
+                <Paper elevation={0}>
+                    <h1>Create an account</h1>
+                    <form onSubmit={Register}>
+                        <TextField
+                            name="steamId"
+                            type="text"
+                            margin="normal"
+                            label="SteamId"
+                            variant="outlined"
+                            required
+                            onChange={onChangeNewUser} />
+                        <TextField
+                            name="friendCode"
+                            type="text"
+                            margin="normal"
+                            label="Friend Code"
+                            variant="outlined"
+                            required
+                            onChange={onChangeNewUser} />
+                        <FormControl style={{ minWidth: "200px" }}>
+                            <InputLabel htmlFor="mainLegend">Main legend</InputLabel>
+                            <Select
+                            labelId="mainLegend"
+                            inputProps={{
+                                name: "legendIndex",
+                            }}
+                            value={newUser.legendIndex ? newUser.legendIndex : "0"}
+                            onChange={onChangeNewUser}>
+                                {legends && legends.map((legendData, index) => (
+                                    <MenuItem value={index} key={index}>{legendData.name}</MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+                        <TextField
+                            name="email"
+                            type="text"
+                            margin="normal"
+                            label="Email"
+                            variant="outlined"
+                            fullWidth
+                            required
+                            onChange={onChangeNewUser} />
+                        <TextField
+                            name="password"
+                            type="password"
+                            margin="normal"
+                            label="Password"
+                            variant="outlined"
+                            fullWidth
+                            required
+                            onChange={onChangeNewUser} />
+                        <TextField
+                            name="passwordCheck"
+                            type="password"
+                            margin="normal"
+                            label="Retype Password"
+                            variant="outlined"
+                            fullWidth
+                            required
+                            onChange={onChangeNewUser} />
+                        <div className="actions">
+                            <p style={{margin: "auto 0"}}>Already have an account? Login <Link to="/login">here</Link></p>
+                            <Button
+                                type="submit"
+                                variant="contained"
+                                color="primary"
+                            >
+                                Register
+                            </Button>
+                        </div>
+                    </form>
+                </Paper>
+            </ThemeProvider>
         </div>
     )
 }

@@ -26,6 +26,10 @@ const userModel = new Schema({
         type: String,
         required: true,
     },
+    mainLegend: {
+        type: String,
+        required: true
+    },
     rating: {
         type: Number,
         required: true
@@ -33,6 +37,9 @@ const userModel = new Schema({
     passwordHash: {
         type: String,
         required: true
+    },
+    friends: {
+        type: Array
     }
 });
 

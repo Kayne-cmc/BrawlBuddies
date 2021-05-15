@@ -4,14 +4,13 @@ import Logout from '../auth/Logout';
 import AuthContext from '../../context/AuthContext';
 import './Nav.css';
 
-
 export default function Nav() {
 
     const { loggedIn } = useContext(AuthContext);
 
     return (
         <div className="Nav">
-            <Link to="/"><h2 className="title">BrawlBuddies</h2></Link>
+            <Link to="/" className="title" style={{textDecoration: "none", color: "white"}}><h2>BrawlBuddies</h2></Link>
             <ul>
                 { 
                     (loggedIn && loggedIn.data) && (

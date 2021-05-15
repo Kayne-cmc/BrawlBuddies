@@ -2,7 +2,9 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    background: white;
+    align-items: center;
+    background: rgb(20,20,20);
+    min-height: calc(100vh - 50px);
 }
 
 .input {
@@ -15,8 +17,9 @@ h1 {
 }
 
 form {
-    width: 25vw;
+    width: 40vw;
     display: flex;
+    justify-content: space-between;
     flex-wrap: wrap;
 }
 
@@ -30,6 +33,10 @@ i:hover {
     color: rgb(100, 100, 100);
 }
 
-Form {
-    width: 50vw;
+.actions {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 1em 0;
 }

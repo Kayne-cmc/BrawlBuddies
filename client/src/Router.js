@@ -18,7 +18,7 @@ export default function Router() {
     return (
         <BrowserRouter>
             <Nav />
-            { (loggedIn && loggedIn.data)? <PrivateRoutes /> : <PublicRoutes />}
+            { (loggedIn && loggedIn.data) ? <PrivateRoutes /> : <PublicRoutes />}
             {/* <Switch>
                 <Route exact path="/" component={Home} />
                 <Route exact path="/help" component={Help} />

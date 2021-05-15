@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect } from 'react';
-import axios from 'axios';
+import DataService from '../services/service';
 
 const AuthContext = createContext();
 
@@ -8,7 +8,7 @@ function AuthContextProvider(props) {
     const [loggedIn, setLoggedIn] = useState(undefined);
 
     async function getLoggedIn() {
-        const loggedInRes = await axios.get("http://localhost:5000/auth/loggedIn");
+        const loggedInRes = await DataService.loggedIn();
         setLoggedIn(loggedInRes);
     };
 

@@ -15,7 +15,7 @@ const userRouter = express.Router();
 
 userRouter.post("/register", async (req,res) => {
     const newUserCredentials = req.body;
-    const { email, name, steamId, friendCode, password } = newUserCredentials;
+    const { email, steamId, friendCode, mainLegend, password} = newUserCredentials;
 
     try {
         const { errors, isValid } = await validateRegister(newUserCredentials);
@@ -29,16 +29,17 @@ userRouter.post("/register", async (req,res) => {
             .then(result => {
                 const brawlhallaId = result.data.brawlhalla_id
 
-                //Get region and rating from BrawlhallaId
+                //Get region from BrawlhallaId
                 axios
                 .get('https://api.brawlhalla.com/player/' + brawlhallaId + '/ranked?api_key=' + BRAWLHALLA_API)
                 .then(result => {
 
-                    const { region, rating } = result.data;
+                    const { name, region, rating } = result.data;
 
                     //Hash password
                     bcrypt.genSalt(10, (err, salt) => {
                         bcrypt.hash(password, salt, (err, hash) => {
+                            const friends = [];
                             const newUser = new User({
                                 email: email,
                                 name: name,
@@ -46,7 +47,9 @@ userRouter.post("/register", async (req,res) => {
                                 friendCode: friendCode,
                                 brawlhallaId: brawlhallaId,
                                 region: region,
+                                mainLegend: mainLegend,
                                 rating: rating,
+                                friends: friends,
                                 passwordHash: hash
                             });
             
@@ -58,16 +61,17 @@ userRouter.post("/register", async (req,res) => {
                                 friendCode: friendCode,
                                 brawlhallaId: brawlhallaId,
                                 region: region,
-                                rating: rating
+                                rating: rating,
+                                friends: friends
                             }, process.env.JWT_SECRET);
 
-                            return res.cookie("token", token, { httpOnly: true }).send();
+                            res.cookie("token", token, { httpOnly: true }).send();
                         });
                     });
                 })
                 .catch(err => console.error(err));
             })
-            .catch(err => console.error(err));
+            .catch(err => res.status(400).send("Invalid Steam ID"));
         }
     } catch (err) {
         console.error(err);
@@ -84,21 +88,28 @@ userRouter.post("/login", async (req,res) => {
         if (!isValid) {
             return res.status(errors.code).send(errors);
         } else {
-
             axios
                 .get("https://api.brawlhalla.com/player/" + existingUser.brawlhallaId + "/ranked?api_key=" + BRAWLHALLA_API)
-                .then(res)
+                .then(result => {
+                    const newRating = result.data.rating;
 
-            const token = jwt.sign({
-                name: existingUser.name,
-                email: existingUser.email,
-                friendCode: existingUser.friendCode,
-                brawlhallaId: existingUser.brawlhallaId,
-                region: existingUser.region,
-                rating: existingUser.rating,
-            }, process.env.JWT_SECRET);
+                    User.findOneAndUpdate({ email: existingUser.email }, { rating: newRating }, (err, doc) => {
+                        const token = jwt.sign({
+                            name: existingUser.name,
+                            email: existingUser.email,
+                            friendCode: existingUser.friendCode,
+                            brawlhallaId: existingUser.brawlhallaId,
+                            region: existingUser.region,
+                            rating: newRating,
+                            friends: existingUser.friends
+                        }, process.env.JWT_SECRET);
 
-            return res.cookie("token", token, { httpOnly: true }).send();
+                        res.cookie("token", token, { httpOnly: true }).send();
+                    }); 
+                })
+                .catch(err => {
+                    console.error(err);
+                });
         }
     } catch (err) {
         console.error(err);
