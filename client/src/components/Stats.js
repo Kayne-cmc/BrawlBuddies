@@ -1,18 +1,8 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import './Stats.css';
 import DataService from '../services/service';
 
 import { Paper, TableContainer, Table, TableHead, TableRow, TableCell, Typography, TableBody, ThemeProvider, createMuiTheme, Button } from '@material-ui/core';
-
-const theme = createMuiTheme({
-    palette: {
-        background: {
-            paper: "rgb(50,50,50)"
-        },
-        type: "dark",
-    }
-});
 
 export default function Stats() {
 
@@ -26,20 +16,23 @@ export default function Stats() {
     ];
 
     useEffect(() => {
-        axios
-            .get("http://localhost:5000/data/stats")
+        DataService.stats()
             .then(res => {
                 setRows(res.data);
             })
             .catch(err => console.log(err));
     }, []);
 
-    const removeFriend = (friendName) => {
+    function removeFriend(friendName) {
         DataService.remove({
             friendName
         })
         .then(res => {
-            console.log(res);
+            DataService.stats()
+            .then(res => {
+                setRows(res.data);
+            })
+            .catch(err => console.log(err));
         })
         .catch(err => {
             console.error(err);
@@ -50,8 +43,7 @@ export default function Stats() {
         <div className="Stats">
             {
                 rows && (
-                    <ThemeProvider theme={theme}>
-                        <Paper elevation={0}>
+                    <>
                             <Typography variant="h3" align="center">Stats</Typography>
                             <TableContainer>
                                 <Table stickyHeader>
@@ -63,9 +55,15 @@ export default function Stats() {
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
-                                        {rows.map(row => (
-                                            <TableRow>
-                                                <TableCell align="center"><Button onClick={removeFriend(row.name)}><i className="fas fa-user-slash" /></Button></TableCell>
+                                        { rows[0] && rows.map((row, index) => (
+                                            <TableRow key={row.name}>
+                                                <TableCell align="center">
+                                                    {
+                                                        index !== 0 && (
+                                                            <Button onClick={() => removeFriend(row.name)}><i className="fas fa-user-slash" /></Button>
+                                                        )
+                                                    }
+                                                </TableCell>
                                                 <TableCell align="center">{row.name}</TableCell>
                                                 <TableCell align="center">{row.rating}</TableCell>
                                                 <TableCell align="center">{row.peak_rating}</TableCell>
@@ -76,8 +74,7 @@ export default function Stats() {
                                     </TableBody>
                                 </Table>
                             </TableContainer>
-                        </Paper>
-                    </ThemeProvider>
+                            </>
                 )
             }
         </div>

@@ -26,7 +26,7 @@ actionsRouter.post("/add", auth, async (req, res) => {
 actionsRouter.post("/remove", auth, (req,res) => {
     const { friendName } = req.body;
 
-    User.findOne({ name: req.payload.name }, (err, doc) => {
+    User.findOne({ name: req.payload.name }, async (err, doc) => {
         if(!doc) {
             return res.status(500).send("Something went wrong. Please try again later");
         }
@@ -34,8 +34,8 @@ actionsRouter.post("/remove", auth, (req,res) => {
         const index = doc.friends.indexOf(friendName);
         if(index > -1) {
             doc.friends.splice(index, 1);
-            doc.save();
-            res.send(`Successfully removed!`);
+            await doc.save();
+            res.send("Successfully removed!yyyyyyyyyyyyyyyyyyy");
         } else {
             res.status(500).send("Something went wrong. Please try again later");
         }

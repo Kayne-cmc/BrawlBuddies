@@ -1,5 +1,4 @@
 const express = require("express");
-const jwt = require("jsonwebtoken");
 const auth = require("../middleware/auth");
 const User = require("../models/user.model");
 const axios = require("axios");
@@ -33,51 +32,53 @@ dataRouter.get("/matches", auth, (req,res) => {
     } 
 });
 
-dataRouter.get("/stats", auth, (req, res) => {
-    try {
-        const { friends } = req.payload;
-        const stats = [];
-        
-        friends.map((friend) => {
-            User.findOne({ name: friend }, "brawlhallaId", (err,doc) => {
-                axios
-                .get("https://api.brawlhalla.com/player/" + doc.brawlhallaId + "/ranked?api_key=" + BRAWLHALLA_API)
-                .then(result => {
-                    const player = {
-                        name: friend,
-                        rating: result.data.rating,
-                        peak_rating: result.data.peak_rating,
-                        tier: result.data.tier
-                    };
+dataRouter.get("/stats", auth, async (req, res) => {
+        let stats = [];
 
-                    stats.push(player);
+        await axios
+        .get("https://api.brawlhalla.com/player/" + req.payload.brawlhallaId + "/ranked?api_key=" + BRAWLHALLA_API)
+        .then(result => {
+            const player = {
+                name: req.payload.name,
+                rating: req.payload.rating,
+                peak_rating: result.data.peak_rating,
+                tier: result.data.tier
+            }
 
-                    if(stats.length === friends.length) {
-                        const { brawlhallaId } = req.payload;
-                        axios
-                        .get("https://api.brawlhalla.com/player/" + brawlhallaId + "/ranked?api_key=" + BRAWLHALLA_API)
-                        .then(result => {
-                            const player = {
-                                name: req.payload.name,
-                                rating: req.payload.rating,
-                                peak_reating: result.data.peak_rating,
-                                tier: result.data.tier
-                            }
+            stats.push(player);
+        })
+        .catch(err => console.error(err));
 
-                            stats.push(player);
-                            console.log(stats)
-                            res.send(stats);
-                        })
-                        .catch(err => console.error(err));
+        User.findOne({name: req.payload.name}, (err, user) => {
+            if (!user) {
+                return res.status(500).json("Something went wrong!");
+            }
+
+            if(!user.friends.length) {
+                return res.send(stats);
+            }
+
+            user.friends.forEach((friend) => {
+                User.findOne({ name: friend }, "brawlhallaId", async (err,doc) => {
+                    await axios
+                    .get("https://api.brawlhalla.com/player/" + doc.brawlhallaId + "/ranked?api_key=" + BRAWLHALLA_API)
+                    .then(result => {
+                        const player = {
+                            name: friend,
+                            rating: result.data.rating,
+                            peak_rating: result.data.peak_rating,
+                            tier: result.data.tier
+                        };
+                        stats.push(player);
+                    })
+                    .catch(err => console.error(err));
+
+                    if(user.friends.length + 1 === stats.length) {
+                        res.send(stats);
                     }
-                })
-                .catch(err => console.error(err));
-            })
+                });
+            });
         });
-    } catch (err) {
-        console.error(err);
-        res.status(401).json({ error: "Unauthorized" });
-    }
 });
 
 dataRouter.get("/legends", (req, res) => {

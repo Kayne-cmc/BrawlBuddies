@@ -1,6 +1,9 @@
 .Stats {
     min-height: calc(100vh - 50px);
+    width: 50vw;
+    margin: 0 auto;
 }
+
 /* 
 .MuiTableHead-root .MuiTableRow-root {
     background: red !important;
