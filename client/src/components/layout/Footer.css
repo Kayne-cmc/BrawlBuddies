@@ -1,0 +1,10 @@
+.Footer {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    background: rgba(0,0,0,0.9);
+    height: 50px;
+}

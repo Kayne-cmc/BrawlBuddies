@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import AuthContext from '../../context/AuthContext';
 import './Auth.css';
 import DataService from '../../services/service';
@@ -36,8 +36,8 @@ export default function Login() {
                 getLoggedIn();
             })
             .catch((err) => {
-                console.error(err.response.data.user);
-                setErrorMessage(err.response.data.user);
+                console.log(err.response.data);
+                setErrorMessage(err.response.data.message);
             });
     }
 
@@ -77,7 +77,7 @@ export default function Login() {
                             onChange={onChangeUser}
                         />
                         <div className="actions">
-                            <p style={{margin: "auto 0"}}>Don't have an account? Register <Link to="/register">here</Link></p>
+                            <p style={{margin: "auto 0"}}>Don't have an account? Register <a href="/register">here</a></p>
                             <Button
                                 type="submit"
                                 variant="contained"

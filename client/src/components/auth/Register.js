@@ -5,12 +5,14 @@ import './Auth.css';
 import DataService from '../../services/service';
 
 import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import { TextField, Button, Paper, Select, MenuItem, FormControl, InputLabel } from '@material-ui/core';
+import { TextField, Button, Paper } from '@material-ui/core';
+import { Autocomplete, Alert } from '@material-ui/lab';
 
 export default function Register() {
 
     const [newUser, setNewUser] = useState({});
     const [legends, setLegends] = useState([]);
+    const [errorMessage, setErrorMessage] = useState("");
     const { getLoggedIn } = useContext(AuthContext);
     const history = useHistory();
 
@@ -29,29 +31,53 @@ export default function Register() {
         });
     }
 
+    const onChangeMainLegend = (e, value) => {
+        setNewUser({
+            ...newUser,
+            mainLegend: value ? value.name : ""
+        });
+    }
+
+    const findMainLegend = (array, property, value) => {
+        for(var i=0; i < array.length; i++) {
+            if (array[i][property] === value) {
+                return legends[i].img
+            }
+        }
+    }
+
     const Register = (e) => {
         e.preventDefault();
 
-        const { email, steamId, friendCode, legendIndex, password, passwordCheck } = newUser;
+        const { email, steamId, friendCode, mainLegend, password, passwordCheck } = newUser;
 
-        const user = {
-            email: email,
-            steamId: steamId,
-            friendCode: friendCode,
-            mainLegend: legends[legendIndex].img,
-            password: password,
-            passwordCheck: passwordCheck,
+        if(isNaN(steamId) || isNaN(friendCode)) {
+            setErrorMessage("SteamID and Friend Code must be numbers");
+        } else {
+            const user = {
+                email: email,
+                steamId: steamId,
+                friendCode: friendCode,
+                mainLegend: findMainLegend(legends, "name", mainLegend),
+                password: password,
+                passwordCheck: passwordCheck,
+            }
+            
+            DataService.register(user)
+                .then(() => {
+                    getLoggedIn();
+                    history.push("/");
+                })
+                .catch((err) => {
+                    setErrorMessage(err.response.data.message);
+                });
         }
-        
-        DataService.register(user)
-            .then(() => {
-                getLoggedIn();
-                history.push("/");
-            })
-            .catch((err) => {
-                console.log(err);
-            });
     }
+
+    const defaultProps = {
+        options: legends,
+        getOptionLabel: (option) => option.name
+    };
 
     const theme = createMuiTheme({
         palette: {
@@ -84,20 +110,24 @@ export default function Register() {
                             variant="outlined"
                             required
                             onChange={onChangeNewUser} />
-                        <FormControl style={{ minWidth: "200px" }}>
-                            <InputLabel htmlFor="mainLegend">Main legend</InputLabel>
-                            <Select
-                            labelId="mainLegend"
-                            inputProps={{
-                                name: "legendIndex",
-                            }}
-                            value={newUser.legendIndex ? newUser.legendIndex : "0"}
-                            onChange={onChangeNewUser}>
-                                {legends && legends.map((legendData, index) => (
-                                    <MenuItem value={index} key={index}>{legendData.name}</MenuItem>
-                                ))}
-                            </Select>
-                        </FormControl>
+                        <Autocomplete
+                            {...defaultProps}
+                            style={{ minWidth: "200px" }}
+                            id="mainLegend"
+                            name="mainLegend"
+                            onChange={onChangeMainLegend}
+                            autoHighlight
+                            renderInput={(params) => (
+                                <TextField {...params}
+                                    required
+                                    margin="normal"
+                                    name="mainLegend"
+                                    value={legends.name}
+                                    label="Main Legend"
+                                    variant="outlined" />
+                                )
+                            }
+                        />
                         <TextField
                             name="email"
                             type="text"
@@ -126,7 +156,7 @@ export default function Register() {
                             required
                             onChange={onChangeNewUser} />
                         <div className="actions">
-                            <p style={{margin: "auto 0"}}>Already have an account? Login <Link to="/login">here</Link></p>
+                            <p style={{margin: "auto 0"}}>Already have an account? Login <a href="/login">here</a></p>
                             <Button
                                 type="submit"
                                 variant="contained"
@@ -136,6 +166,11 @@ export default function Register() {
                             </Button>
                         </div>
                     </form>
+                    { errorMessage && (
+                        <>
+                            <Alert severity="error" variant="filled" style={{margin: "1em 0"}}>{errorMessage}</Alert>
+                        </>
+                    )}
                 </Paper>
             </ThemeProvider>
         </div>

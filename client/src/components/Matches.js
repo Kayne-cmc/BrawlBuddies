@@ -48,7 +48,7 @@ export default function Matches() {
             <div className="player">
                 <ThemeProvider theme={theme}>
                     <Paper elevation={24}>
-                        <Card>
+                        <Card my={10}>
                             <CardMedia
                                 image={props.match.mainLegend}
                                 title="Main Legend"

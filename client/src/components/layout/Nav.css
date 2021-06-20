@@ -1,9 +1,11 @@
 .Nav {
     display: flex;
+    position: fixed;
     justify-content: flex-end;
     align-items: center;
     background: rgba(0,0,0,0.5);
     height: 50px;
+    width: 100%;
     z-index: 1;
 }
 
@@ -38,11 +40,24 @@ ul li a {
 }
 
 ul li a:hover {
-    color: rgb(100,100,100);
+    color: white;
     text-decoration: none;
 }
 
-.line {
-    height: 10px;
-    color:black;
+ul li a:after{
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    display: block;
+    right: 0;
+    background: #fff;
+    transition: width .2s ease;
+    -webkit-transition: width .2s ease;
+  }
+   
+ul li a:hover:after {
+    width: 100%;
+    left: 0;
+    background: #fff;
 }

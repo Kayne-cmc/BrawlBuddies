@@ -2,7 +2,15 @@ import React, { useEffect, useState } from 'react';
 import './Stats.css';
 import DataService from '../services/service';
 
-import { Paper, TableContainer, Table, TableHead, TableRow, TableCell, Typography, TableBody, ThemeProvider, createMuiTheme, Button } from '@material-ui/core';
+import { Paper, TableContainer, Table, TableRow, TableHead, TableCell, Typography, TableBody, ThemeProvider, createMuiTheme, Button } from '@material-ui/core';
+
+import { withStyles } from '@material-ui/core/styles';
+
+const TransparentTableHead = withStyles(theme => ({
+    root: {
+      color: 'red'
+    }
+  }))(TableHead);
 
 export default function Stats() {
 
@@ -39,21 +47,35 @@ export default function Stats() {
         });
     }
 
+    const theme = createMuiTheme({
+        palette: {
+            background: {
+                paper: "transparent"
+            },
+            type: "dark",
+        }
+    });
+
     return (
         <div className="Stats">
             {
                 rows && (
                     <>
-                            <Typography variant="h3" align="center">Stats</Typography>
+                            <ThemeProvider theme={theme}>
+                                <Paper elevation={0}>
+                                    <Typography variant="h3" align="center">Matches in your region</Typography>
+                                </Paper>
+                            </ThemeProvider>
+
                             <TableContainer>
                                 <Table stickyHeader>
-                                    <TableHead>
+                                    <TransparentTableHead>
                                         <TableRow>
                                             {columns.map(column => (
                                                     <TableCell key={column.id} align="center">{column.id}</TableCell>
                                             ))}
                                         </TableRow>
-                                    </TableHead>
+                                    </TransparentTableHead>
                                     <TableBody>
                                         { rows[0] && rows.map((row, index) => (
                                             <TableRow key={row.name}>

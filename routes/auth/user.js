@@ -27,7 +27,9 @@ userRouter.post("/register", async (req,res) => {
             axios
             .get('https://api.brawlhalla.com/search?steamid=' + steamId + '&api_key=' + BRAWLHALLA_API)
             .then(result => {
-                const brawlhallaId = result.data.brawlhalla_id
+                const brawlhallaId = result.data.brawlhalla_id;
+
+                console.log("brawlid", brawlhallaId);
 
                 //Get region from BrawlhallaId
                 axios

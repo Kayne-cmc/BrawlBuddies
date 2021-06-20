@@ -18,11 +18,11 @@ module.exports = async function validateLogin(data) {
     
         switch(true) {
             case (!email || !password):
-                errors.empty = "Please fill all required fields";
+                errors.message = "Please fill all required fields";
                 errors.code = 400;
                 break;
             case (existingUser === null || !correctPassword):
-                errors.user = "Email or password is incorrect";
+                errors.message = "Email or password is incorrect";
                 errors.code = 401;
                 break;
             default:

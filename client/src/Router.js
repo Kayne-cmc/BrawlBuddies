@@ -4,6 +4,7 @@ import AuthContext from './context/AuthContext';
 import PrivateRoutes from './PrivateRoutes';
 import PublicRoutes from './PublicRoutes';
 import Nav from './components/layout/Nav';
+import Footer from './components/layout/Footer';
 
 export default function Router() {
 
@@ -13,6 +14,7 @@ export default function Router() {
         <BrowserRouter>
             <Nav />
             { (loggedIn && loggedIn.data) ? <PrivateRoutes /> : <PublicRoutes />}
+            <Footer />
         </BrowserRouter>
     )
 }

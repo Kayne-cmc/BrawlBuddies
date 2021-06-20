@@ -31,7 +31,6 @@ export default function Nav() {
                     )
                 }
             </ul>
-            <div className="line"></div>
         </div>
     )
 }

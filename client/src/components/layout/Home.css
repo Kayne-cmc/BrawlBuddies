@@ -1,4 +1,5 @@
 .App {
+    background: white;
     background: linear-gradient(315deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 20%, rgba(7,56,152,1) 40%, rgba(65,143,199,1) 70%, rgba(0,212,255,1) 100%);
     width: 100vw;
     max-width: 100%;
@@ -6,6 +7,7 @@
 
 .Home {
     min-height: calc(100vh - 50px);
+    overflow: hidden;
 }
 
 .box {
@@ -23,8 +25,25 @@ a {
     justify-content: center;
 }
 
+.item {
+    min-width: 200px;
+    width: 400px;
+}
+
+.card {
+    display: flex;
+    justify-content: center;
+    width: 80% !important;
+    max-height: 250px;
+    min-height: 200px;
+    border-radius: 25px !important;
+    margin: 1em auto;
+    padding: 2em;
+    /* box-shadow: 5px 5px 10px 10px rgba(0,0,0,0.5); */
+}
+
 .card i {
-    font-size: 50px;
+    font-size: 3em;
     width: 100%;
     text-align: center;
 }
@@ -45,40 +64,112 @@ a {
     text-align: center;
 }
 
-.card:hover {
-    box-shadow: 0 10px 50px 0 rgba(0, 0, 0, 0.5);
+/* .card:hover {
+    box-shadow: 5px 5px 10px 10px rgba(0,0,0,0.5);
+    transition: 0.5s;
+} */
+
+.card:hover .blob{
+    fill: transparent;
     transition: 0.5s;
 }
 
-.card:nth-child(1):hover {
-    /* background: radial-gradient(circle, rgb(255,255,255) 0%, rgb(65,160,199) 100%); */
-    background: rgb(65,160,199);
-}
-
-.card:nth-child(2):hover {
-    /* background: radial-gradient(circle, rgb(255,255,255,1) 0%, rgb(196,42,31) 100%); */
-    background: rgb(196,42,31);
-}
-
-.card:nth-child(3):hover {
-    /* background: radial-gradient(circle, rgb(255,255,255) 0%, rgb(200,172,70) 100%); */
-    background: rgb(200,172,70);
-}
-
-.card:hover > i {
-    color: black;
+.card:hover i {
+    color: white;
     transition: 0.5s;
 }
 
-.card {
+.cardIcon {
     display: flex;
+    position: relative;
     justify-content: center;
-    max-width: 250px;
+    width: 100%;
     max-height: 250px;
-    min-width: 200px !important;
-    min-height: 200px;
-    border-radius: 25px !important;
-    background: white;
-    margin: 1em;
-    padding: 2em;
+    min-height: 150px;
+}
+
+.blob {
+    fill: white;
+}
+
+.svg-blob {
+    min-height: 100px;
+    max-height: 200px;
+    margin: 0 auto;
+}
+
+.smaller-podium{
+    width: 80%;
+    height: auto;
+    margin: 0 10%;
+}
+
+.podium {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+}
+
+.blob, .fa-users, .fa-chart-line, .fa-trophy {
+    display: flex;
+    position: absolute;
+    height: 100%;
+    top: 0;
+    left: 0;
+    align-items: center;
+    justify-content: center;
+    transition: 0.5s;
+}
+
+.introduction {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    position: relative;
+}
+
+.main-page-title {
+    font-family: 'Francois One', sans-serif;
+    color: black;
+}
+
+.main-page-description {
+    font-family:'Open Sans',Helvetica,Arial,Lucida,sans-serif;
+    color: black;
+}
+
+.main-page {
+    position: absolute;
+    top: 20%;
+    left: 5%;
+    z-index: 1;
+    height: 100%;
+    width: 40%;
+}
+
+.wave-container {
+    width: 300%;
+    overflow: hidden;
+    display: flex;
+    flex-wrap: nowrap;
+}
+
+#wave {
+    width: 100%;
+}
+
+.image-container {
+    position: absolute;
+    display: flex;
+    right: 20%;
+    top: 10%;
+}
+
+.image-container img {
+    width: 15vw;
+    height: auto;
+}
+
+@media(min-width: 500px) {
+    
 }

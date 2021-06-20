@@ -1,5 +1,5 @@
 import React from 'react';
-import {Redirect, Route, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import Home from './components/layout/Home';
 import Help from './components/layout/Help';
 import Matches from './components/Matches';

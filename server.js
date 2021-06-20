@@ -20,7 +20,7 @@ app.use(express.static(path.join(__dirname, "client/build")));
 app.use(cookieParser());
 app.use(express.json());
 app.use(cors({
-    origin: [process.env.ORIGIN],
+    origin: process.env.ORIGIN,
     credentials: true,
 }));
 
