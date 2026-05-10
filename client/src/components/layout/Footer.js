@@ -13,7 +13,7 @@ const WhiteTypography = withStyles({
 export default function Footer() {
     return (
         <div className="Footer">
-            <WhiteTypography variant="h5">Made with ❤️ by <a href="https://kaynechu.me" target="blank" style={{color: "rgb(6,69,173)"}}>Kayne</a></WhiteTypography>
+            <WhiteTypography variant="h5">Made with ❤️ by <a href="https://kaynechu.me" target="_blank" rel="noopener noreferrer" style={{color: "rgb(6,69,173)"}}>Kayne</a></WhiteTypography>
         </div>
     )
 }

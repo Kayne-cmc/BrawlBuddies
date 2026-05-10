@@ -1,8 +1,19 @@
 .Stats {
     min-height: calc(100vh - 50px);
     width: 50vw;
+    min-width: 320px;
+    max-width: 100%;
     margin: 0 auto;
     padding-top: 60px;
+    padding-bottom: 60px;
+    box-sizing: border-box;
+}
+
+@media (max-width: 767px) {
+    .Stats {
+        width: 95vw;
+        overflow-x: auto;
+    }
 }
 
 /* 

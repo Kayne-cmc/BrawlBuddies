@@ -8,6 +8,7 @@
 .Home {
     min-height: calc(100vh - 50px);
     overflow: hidden;
+    padding-bottom: 60px;
 }
 
 .box {
@@ -23,6 +24,7 @@ a {
 .cards {
     display: flex;
     justify-content: center;
+    flex-wrap: wrap;
 }
 
 .item {
@@ -170,6 +172,67 @@ a {
     height: auto;
 }
 
-@media(min-width: 500px) {
-    
+@media (max-width: 767px) {
+    .introduction {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-height: 180px;
+        padding-top: 60px;
+        padding-bottom: 1em;
+    }
+
+    #wave {
+        display: none;
+    }
+
+    .main-page {
+        position: static;
+        width: 90%;
+        text-align: center;
+    }
+
+    .main-page-title {
+        color: white;
+    }
+
+    .main-page-description {
+        color: rgba(255, 255, 255, 0.85);
+    }
+
+    .image-container {
+        position: static;
+        display: flex;
+        justify-content: center;
+        margin-top: 0.5em;
+    }
+
+    .image-container img {
+        width: 35vw;
+        max-width: 160px;
+    }
+
+    .cards {
+        padding: 0 0.5em;
+    }
+
+    .item {
+        width: 100%;
+        min-width: unset;
+    }
+
+    .card {
+        width: 92% !important;
+        min-height: 160px;
+        max-height: none;
+    }
+
+    .cardIcon {
+        min-height: 120px;
+    }
+
+    .smaller-podium,
+    .podium {
+        display: none;
+    }
 }

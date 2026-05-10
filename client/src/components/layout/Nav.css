@@ -61,3 +61,58 @@ ul li a:hover:after {
     left: 0;
     background: #fff;
 }
+
+.hamburger {
+    display: none;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.4rem;
+    cursor: pointer;
+    padding: 0.25rem 1rem;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.hamburger:focus-visible {
+    outline: 2px solid white;
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
+@media (max-width: 767px) {
+    .hamburger {
+        display: block;
+    }
+
+    .Nav ul {
+        display: none;
+        position: fixed;
+        top: 50px;
+        left: 0;
+        right: 0;
+        background: rgba(0, 0, 0, 0.97);
+        flex-direction: column;
+        align-items: center;
+        padding: 1em 0;
+        margin: 0;
+        z-index: 10;
+    }
+
+    .Nav ul.nav-open {
+        display: flex;
+    }
+
+    .Nav ul li {
+        display: block;
+        width: 100%;
+        text-align: center;
+        padding: 0.6em 0;
+    }
+
+    .Nav ul li a {
+        font-size: 1.1rem;
+    }
+}

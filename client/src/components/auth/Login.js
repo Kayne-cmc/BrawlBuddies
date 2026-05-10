@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 import AuthContext from '../../context/AuthContext';
 import './Auth.css';
 import DataService from '../../services/service';
@@ -58,7 +58,7 @@ export default function Login() {
                     <form onSubmit={Login}>
                         <TextField
                             name="email"
-                            type="text"
+                            type="email"
                             margin="normal"
                             label="Email"
                             variant="outlined"
@@ -77,7 +77,7 @@ export default function Login() {
                             onChange={onChangeUser}
                         />
                         <div className="actions">
-                            <p style={{margin: "auto 0"}}>Don't have an account? Register <a href="/register">here</a></p>
+                            <p style={{margin: "auto 0"}}>Don't have an account? Register <Link to="/register">here</Link></p>
                             <Button
                                 type="submit"
                                 variant="contained"

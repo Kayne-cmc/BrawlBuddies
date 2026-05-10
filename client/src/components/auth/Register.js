@@ -1,5 +1,5 @@
-import React, { useState, useContext, useEffect} from 'react';
-import { useHistory, Link } from 'react-router-dom'
+import React, { useState, useContext, useEffect } from 'react';
+import { useHistory, Link } from 'react-router-dom';
 import AuthContext from '../../context/AuthContext';
 import './Auth.css';
 import DataService from '../../services/service';
@@ -100,6 +100,7 @@ export default function Register() {
                             margin="normal"
                             label="SteamId"
                             variant="outlined"
+                            fullWidth
                             required
                             onChange={onChangeNewUser} />
                         <TextField
@@ -108,11 +109,12 @@ export default function Register() {
                             margin="normal"
                             label="Friend Code"
                             variant="outlined"
+                            fullWidth
                             required
                             onChange={onChangeNewUser} />
                         <Autocomplete
                             {...defaultProps}
-                            style={{ minWidth: "200px" }}
+                            fullWidth
                             id="mainLegend"
                             name="mainLegend"
                             onChange={onChangeMainLegend}
@@ -130,7 +132,7 @@ export default function Register() {
                         />
                         <TextField
                             name="email"
-                            type="text"
+                            type="email"
                             margin="normal"
                             label="Email"
                             variant="outlined"
@@ -156,7 +158,7 @@ export default function Register() {
                             required
                             onChange={onChangeNewUser} />
                         <div className="actions">
-                            <p style={{margin: "auto 0"}}>Already have an account? Login <a href="/login">here</a></p>
+                            <p style={{margin: "auto 0"}}>Already have an account? Login <Link to="/login">here</Link></p>
                             <Button
                                 type="submit"
                                 variant="contained"
