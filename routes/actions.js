@@ -7,6 +7,10 @@ const actionsRouter = express.Router();
 actionsRouter.post("/add", auth, async (req, res) => {
     const { friendName } = req.body;
 
+    if (!friendName) {
+        return res.status(400).json({ error: 'friendName is required' });
+    }
+
     User.findOne({ name: req.payload.name }, (err, doc) => {
         if(!doc) {
             return res.status(500).send("Something went wrong. Please try again later");
@@ -26,6 +30,10 @@ actionsRouter.post("/add", auth, async (req, res) => {
 actionsRouter.post("/remove", auth, (req,res) => {
     const { friendName } = req.body;
 
+    if (!friendName) {
+        return res.status(400).json({ error: 'friendName is required' });
+    }
+
     User.findOne({ name: req.payload.name }, async (err, doc) => {
         if(!doc) {
             return res.status(500).send("Something went wrong. Please try again later");
@@ -35,7 +43,7 @@ actionsRouter.post("/remove", auth, (req,res) => {
         if(index > -1) {
             doc.friends.splice(index, 1);
             await doc.save();
-            res.send("Successfully removed!yyyyyyyyyyyyyyyyyyy");
+            res.json({ message: 'Successfully removed!' });
         } else {
             res.status(500).send("Something went wrong. Please try again later");
         }
