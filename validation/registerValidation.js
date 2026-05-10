@@ -22,7 +22,7 @@ module.exports = async function validateRegister(data) {
                 break;
             case (!sid.isValid()):
                 errors.message = "Invalid SteamID"
-                errors.code = 404;
+                errors.code = 400;
                 break;
             case (!validator.isEmail(email)):
                 errors.message = "Please enter a valid email";
@@ -46,5 +46,6 @@ module.exports = async function validateRegister(data) {
         return({errors, isValid});
     } catch(err) {
         console.error(err);
+        throw err;
     }
 };

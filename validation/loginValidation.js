@@ -13,7 +13,7 @@ module.exports = async function validateLogin(data) {
         if(existingUser) {
             await bcrypt.compare(password, existingUser.passwordHash)
                 .then(res => correctPassword = res)
-                .catch(err => console.log(err));
+                .catch(err => { console.error(err); throw err; });
         }
     
         switch(true) {
@@ -34,5 +34,6 @@ module.exports = async function validateLogin(data) {
         return({errors, isValid, existingUser});
     } catch(err) {
         console.error(err);
+        throw err;
     }
 };
