@@ -3,7 +3,6 @@ const auth = require("../middleware/auth");
 const User = require("../models/user.model");
 const axios = require("axios");
 
-const request = require("request");
 const cheerio = require("cheerio");
 
 const dataRouter = express.Router();
@@ -20,7 +19,7 @@ dataRouter.get("/matches", auth, (req,res) => {
             email: { $ne: userData.email },
             region: userData.region,
             rating: { $gte: lowerLimit, $lte: upperLimit}
-        }, (err, docs) => {
+        }).limit(50).exec((err, docs) => {
             if (!docs) {
                 return res.status(500).json("No matches currently");
             }
@@ -33,76 +32,70 @@ dataRouter.get("/matches", auth, (req,res) => {
 });
 
 dataRouter.get("/stats", auth, async (req, res) => {
-        let stats = [];
+    try {
+        const selfResult = await axios.get(
+            "https://api.brawlhalla.com/player/" + req.payload.brawlhallaId + "/ranked?api_key=" + BRAWLHALLA_API
+        );
+        const selfPlayer = {
+            name: req.payload.name,
+            rating: req.payload.rating,
+            peak_rating: selfResult.data.peak_rating,
+            tier: selfResult.data.tier
+        };
 
-        await axios
-        .get("https://api.brawlhalla.com/player/" + req.payload.brawlhallaId + "/ranked?api_key=" + BRAWLHALLA_API)
-        .then(result => {
-            const player = {
-                name: req.payload.name,
-                rating: req.payload.rating,
-                peak_rating: result.data.peak_rating,
-                tier: result.data.tier
-            }
+        const user = await User.findOne({ name: req.payload.name });
+        if (!user) {
+            return res.status(500).json("Something went wrong!");
+        }
 
-            stats.push(player);
-        })
-        .catch(err => console.error(err));
+        if (!user.friends.length) {
+            return res.json([selfPlayer]);
+        }
 
-        User.findOne({name: req.payload.name}, (err, user) => {
-            if (!user) {
-                return res.status(500).json("Something went wrong!");
-            }
+        const friendStats = await Promise.all(
+            user.friends.map(async (friend) => {
+                const doc = await User.findOne({ name: friend }, "brawlhallaId");
+                const result = await axios.get(
+                    "https://api.brawlhalla.com/player/" + doc.brawlhallaId + "/ranked?api_key=" + BRAWLHALLA_API
+                );
+                return {
+                    name: friend,
+                    rating: result.data.rating,
+                    peak_rating: result.data.peak_rating,
+                    tier: result.data.tier
+                };
+            })
+        );
 
-            if(!user.friends.length) {
-                return res.send(stats);
-            }
-
-            user.friends.forEach((friend) => {
-                User.findOne({ name: friend }, "brawlhallaId", async (err,doc) => {
-                    await axios
-                    .get("https://api.brawlhalla.com/player/" + doc.brawlhallaId + "/ranked?api_key=" + BRAWLHALLA_API)
-                    .then(result => {
-                        const player = {
-                            name: friend,
-                            rating: result.data.rating,
-                            peak_rating: result.data.peak_rating,
-                            tier: result.data.tier
-                        };
-                        stats.push(player);
-                    })
-                    .catch(err => console.error(err));
-
-                    if(user.friends.length + 1 === stats.length) {
-                        res.send(stats);
-                    }
-                });
-            });
-        });
+        res.json([selfPlayer, ...friendStats]);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json("Something went wrong!");
+    }
 });
 
-dataRouter.get("/legends", (req, res) => {
-    request("https://brawlhalla.fandom.com/wiki/Legends", (error, response, html) => {
-        if(!error && response.statusCode == 200) {
-            const $ = cheerio.load(html);
-            const legends = [];
+dataRouter.get("/legends", async (req, res) => {
+    try {
+        const response = await axios.get("https://brawlhalla.fandom.com/wiki/Legends");
+        const $ = cheerio.load(response.data);
+        const legends = [];
 
-            $(".mw-parser-output table table img").each((i, elem) => {
-                if (i % 2 === 0) {
-                    let legend = {};
+        $(".mw-parser-output table table img").each((i, elem) => {
+            if (i % 2 === 0) {
+                let legend = {};
 
-                    legend["name"] = $(elem).parent().attr("title");
-                    legend["img"] = $(elem).attr("src").split("png")[0] + "png";
+                legend["name"] = $(elem).parent().attr("title");
+                legend["img"] = $(elem).attr("src").split("png")[0] + "png";
 
-                    legends.push(legend);
-                }
-            });
+                legends.push(legend);
+            }
+        });
 
-            res.send(legends);
-        } else {
-            res.status(400).send("Could not retrieve legends");
-        }
-    });
+        res.send(legends);
+    } catch (err) {
+        console.error(err);
+        res.status(400).send("Could not retrieve legends");
+    }
 });
 
 module.exports = dataRouter;
