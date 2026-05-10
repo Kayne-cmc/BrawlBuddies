@@ -108,7 +108,7 @@ export default function Matches() {
             
             <div className="players">
                 {matches && matches.map((match, index) => (
-                    <Match match={match} matchIndex={index} key={index}></Match>
+                    <Match match={match} matchIndex={index} key={match.name}></Match>
                 ))}
             </div>
 

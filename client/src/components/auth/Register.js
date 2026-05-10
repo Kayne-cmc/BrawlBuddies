@@ -41,7 +41,7 @@ export default function Register() {
     const findMainLegend = (array, property, value) => {
         for(var i=0; i < array.length; i++) {
             if (array[i][property] === value) {
-                return legends[i].img
+                return legends[i].name
             }
         }
     }
